@@ -21,7 +21,6 @@ def check_bound(obj_rct: pg.Rect):
     return yoko, tate
 
 
-
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -47,6 +46,9 @@ def main():
             if event.type == pg.QUIT: 
                 return
 
+        if kk_rct.colliderect(bd_rct):  # 練習５：ぶつかってたら
+            return
+        
         screen.blit(bg_img, [0, 0])
         
         key_lst = pg.key.get_pressed()
@@ -67,7 +69,7 @@ def main():
         if not tate:
             vy *= -1
         screen.blit(bd_img, bd_rct)
-        
+            
         pg.display.update()
         tmr += 1
         clock.tick(50)
