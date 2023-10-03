@@ -5,10 +5,22 @@ import pygame as pg
 
 WIDTH, HEIGHT = 1600, 900
 
+
 delta = {pg.K_UP: (0, -5),
          pg.K_DOWN: (0, +5),
          pg.K_LEFT: (-5, 0),
          pg.K_RIGHT: (+5, 0)}
+
+
+def check_bound(obj_rct: pg.Rect):
+    yoko, tate = True, True
+    if obj_rct.left < 0 or WIDTH < obj_rct.right:
+        yoko = False
+    if obj_rct.top < 0 or HEIGHT < obj_rct.bottom:
+        tate = False
+    return yoko, tate
+
+
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -43,10 +55,17 @@ def main():
             if key_lst[key]:
                 sum_mv[0] += mv[0]
                 sum_mv[1] += mv[1]
-        kk_rct.move_ip(sum_mv[0], sum_mv[1])  
+        kk_rct.move_ip(sum_mv[0], sum_mv[1])
+        if check_bound(kk_rct) != (True, True):
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
         screen.blit(kk_img, kk_rct)
         
         bd_rct.move_ip(vx, vy)
+        yoko, tate = check_bound(bd_rct)
+        if not yoko:
+            vx *= -1
+        if not tate:
+            vy *= -1
         screen.blit(bd_img, bd_rct)
         
         pg.display.update()
